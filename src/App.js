@@ -1,15 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState } from "react";
+import WebList from "./component/WebList";
 
 function App() {
-
-  
-
-
+ 
 
   return (
     <div className="App">
-     <h1> This is a Meta data Assisment</h1>
+    <WebList />
+    
     </div>
   );
 }
