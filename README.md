@@ -3,6 +3,11 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ### Some Functions Like Showing Title and Source url voilates some Chrome Web Security Policy As it is just a frontend project there is no backend to overcome this CORS Problem. Please open the url after disablying web security in Chrome
+
+
+## Screenshot of the Real Application
+![project_screenshot](https://user-images.githubusercontent.com/66348284/124116004-15be4600-da8c-11eb-80e6-3c73f139c14e.png)
+
  
 ## Available Scripts
 
