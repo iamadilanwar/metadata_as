@@ -19,14 +19,14 @@ Run  **npm install** in the Command Prompt in the metadata_as folder
 
 ### `Packages need to install`
 
- *validator package*
- **npm install validator**
+ **validator package**
+ ####npm install validator
 
- *Bootstrap*
- **npm install react-bootstrap bootstrap@4.6.0**
+ **Bootstrap**
+ ####npm install react-bootstrap bootstrap@4.6.0
 
- *URL-Metadata*
- **npm install url-metadata --save`**
+ **URL-Metadata**
+ ####npm install url-metadata --save`
 
 ### `npm start`
 
