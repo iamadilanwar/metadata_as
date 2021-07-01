@@ -1,5 +1,6 @@
 import "./WebList.css";
 import React, { useState, useEffect } from "react";
+import validator from "validator";
 
 // This cide section is to get the data from LocalStorage.
 
@@ -18,12 +19,26 @@ const getLocalItmes = () => {
 
 function WebList() {
 
+  // Const for URL Validation 
+    const [error, setError] = useState('')
   // Const for the Major data 
     const [inputData, setInputData] = useState("");
     const [items, setItems] = useState(getLocalItmes());
  //Const for Main data to be Extracted one is for the Title and the second is for the url without https or http just a simple sweet url with wwww
     const [title, getTitle]=useState()
     const [source, getSource]=useState()
+
+    
+ // First Input data url checking    
+    const validate = (e) => {
+      if (validator.isURL(e)) {
+        setError('');
+        setInputData(e)
+      } else {
+        setError('Error Not Valid URL')
+      }
+    }
+  
 
   // functions for the pakage which extracts the metadata from the url
     const urlMetadata = require('url-metadata')
@@ -38,7 +53,7 @@ function WebList() {
 
       const addItem = () => {        
           if(!inputData){       // <= if url area is blank
-
+              alert('Please Input a Valid ')
           }else{
         setItems([ {title , source} , ...items ]);   // <= If url given then
           setInputData("");
@@ -46,18 +61,49 @@ function WebList() {
       };
 //delete
 const  deleteurl = (id) => {
-    const updateditems = items.filter((ele) =>{
-        return id !== ele.i;
-    }); 
-    setItems(updateditems);
-}
+    console.log(id);
+    const updatedURLlist = items.filter((item,i)=>{
+return i !== id;
+    });
 
+    setItems(updatedURLlist);
+}
+      const [live,setlive]=useState();
+
+      const [liveBtn, setliveButton]=useState();
+
+        const liveButton = {
+        backgroundColor: '#058423',
+        padding: '5px 25px',
+        marginRight: '10px',
+        color: 'aliceblue',
+        borderRadius: '5px',}
+
+       const notliveButton = {
+        backgroundColor: '#FC5200',
+        padding: '5px 25px',
+        color: 'aliceblue',
+        borderRadius: '5px',}
       
-// local storage data fetching
+//local storage data fetching
       useEffect(() => {
         localStorage.setItem("lists", JSON.stringify(items));
       }, [items]);
-      const live = items.length;
+      const liveWebsites = items.length;
+
+      useEffect(()=>{
+        fetch(inputData).then((response) => {
+          console.log(response)
+          if (response.status === 200 && response.ok === true){
+            setlive('LIVE');
+            setliveButton(liveButton)
+  
+          } else{
+            setlive('ERROR');
+            setliveButton(notliveButton);
+  
+          }
+      })},[]);
 
 
   return (
@@ -65,7 +111,7 @@ const  deleteurl = (id) => {
   <div className="main-div">
   <div className="header">
       <a href="#default" className="logo"> LIVE WEBSITE TRACKING </a>
-      <div className="header-right">  Currently tracking {live} websites</div>
+      <div className="header-right">  Currently tracking {liveWebsites} websites</div>
     </div>
       
       <div className="body-container">
@@ -74,24 +120,30 @@ const  deleteurl = (id) => {
                     type="text"
                     placeholder="    Input with URL Validation"
                     value={inputData}
-                    onChange={(e) => setInputData(e.target.value)}
+                    onChange={(e) => validate(e.target.value)}
                   />
 
-                  <button  title="Add Item" onClick={addItem}>ADD WEBSITE</button>
-                  
+                  <button  title="Add Item" onClick={addItem}>ADD WEBSITE</button><br/>
+                  <span style={{ fontWeight: 'bold', color: 'red', }}>{error}</span>
                 </div>
+
 
                 <div className="body-title">WEBSITES</div>
                 <div className="itemlist" >
                 
                   {
-                    items.map((ele,ind)=>{
+                    items.map((item,i)=>{
                       return(
-                        <div className="itemlist_" >
-                          <div id="itemlist_inner" key={ind}>
-                          <span id="title"> {ele.title}</span><br/>
-                          <span id="source"><a href="#">{ele.source} </a></span>
-                          <button  onClick={() => deleteurl(ele.ind)} >delete</button>
+                        <div className="itemlist_" key={i} >
+                          <div id="itemlist_inner">
+                          
+                          <button style={{ backgroundColor: '#FF2F2F', border:' none' , float :'right', padding: '5px 12px', color: 'aliceblue',borderRadius: '50%',}} onClick={() => deleteurl(i)} > X </button>
+
+                          <p style={{ color: '#B4B4B4', padding: '5px', marginRight:'10px', borderRadius: '5px',float: 'right'}}> Status <span style={liveBtn}>{live}</span> </p>
+                        
+                          <span id="title"> {item.title}</span><br/>
+                          <span id="source"><a href="#">{item.source} </a></span><br/>
+                          
                           </div>
                           </div>
                       )
